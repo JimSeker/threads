@@ -14,6 +14,12 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+/*
+ * This is a thread demo
+ * When the user touches the image, a red bar will roll down.  
+ * If the user lifts before it is done, then it will pause the thread.
+ * 
+ */
 public class ThreadDemoActivity extends Activity  implements Runnable {
 	
 	TextView log;

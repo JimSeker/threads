@@ -8,6 +8,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+/*
+ * very simple demo of a AsyncTask.
+ * 
+ */
 public class MainActivity extends Activity {
 	TextView Progress;
 	Button Button1;
@@ -16,10 +20,14 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
 		Progress = (TextView)findViewById(R.id.textView1);
 		Button1 = (Button)findViewById(R.id.button1);
 		Button1.setOnClickListener(new Button.OnClickListener(){
 
+			/*
+			 * starts the asynctask.
+			 */
 			@Override
 			public void onClick(View view) {
 				CountingTask task = new CountingTask();
@@ -29,6 +37,11 @@ public class MainActivity extends Activity {
 	}
 
 
+	/*
+	 * This is a very simple AsyncTask that counts to 100 and sets to the text view in the
+	 * layout.
+	 * 
+	 */
 	public class CountingTask extends AsyncTask<Integer, Integer, Integer> {
 		
 		CountingTask() {}
