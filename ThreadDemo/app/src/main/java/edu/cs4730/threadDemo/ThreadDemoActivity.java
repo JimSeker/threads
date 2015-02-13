@@ -1,6 +1,5 @@
 package edu.cs4730.threadDemo;
 
-import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -9,6 +8,7 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.ActionBarActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -20,7 +20,7 @@ import android.widget.TextView;
  * If the user lifts before it is done, then it will pause the thread.
  * 
  */
-public class ThreadDemoActivity extends Activity  implements Runnable {
+public class ThreadDemoActivity extends ActionBarActivity {
 	
 	TextView log;
 	ImageView theboardfield;
@@ -59,9 +59,9 @@ public class ThreadDemoActivity extends Activity  implements Runnable {
 		myColor.setStyle(Paint.Style.FILL);
         
 		//message handler for the animation.
-		handler = new Handler() {
+		handler = new Handler(new Handler.Callback() {
 			@Override
-			public void handleMessage(Message msg) {
+			public boolean handleMessage(Message msg) {
 				if (msg.what == 0) { //redraw image
 					if (theboard != null && theboardfield != null) {
 						drawBmp();
@@ -70,8 +70,9 @@ public class ThreadDemoActivity extends Activity  implements Runnable {
 					Bundle stuff = msg.getData();
 					logthis("Thread: "+stuff.getString("logthis"));
 				}
+                return true;
 			}
-		};
+		});
 		
     }
     /*
@@ -89,7 +90,7 @@ public class ThreadDemoActivity extends Activity  implements Runnable {
     		isAnimation = true;
     		if (myThread != null)
     			myThread = null;
-     		myThread = new Thread(this);
+     		myThread = new Thread(new animator());
     		myThread.start();
     	}
     }
@@ -126,7 +127,7 @@ public class ThreadDemoActivity extends Activity  implements Runnable {
     		
 			return false; 
     	}
-    };
+    }
     
     /*
      * onClickListener
@@ -135,7 +136,7 @@ public class ThreadDemoActivity extends Activity  implements Runnable {
 
 		@Override
 		public void onClick(View v) {
-			// TODO Auto-generated method stub
+
 			logthis("onClick called");
 			if (isAnimation) { //thread is active,
 				 if (!pause) {  //and not paused, so stop it.
@@ -156,7 +157,6 @@ public class ThreadDemoActivity extends Activity  implements Runnable {
 
 		@Override
 		public boolean onLongClick(View v) {
-			// TODO Auto-generated method stub
 			logthis("onLongClick called");
 			return false;
 		}
@@ -180,53 +180,55 @@ public class ThreadDemoActivity extends Activity  implements Runnable {
 		handler.sendMessage(msg);
 		System.out.println("Sent message"+ logthis);
     }
-	@Override
-	public void run() {
-		boolean done = false;
-		int x = 0;
-		//first draw a red down the board
-		myColor.setColor(Color.RED);
-		while (!done) {
-			if (!isAnimation) {return;}  //To stop the thread, if the system is paused or killed.
-			
-			if (pause) {  //We should wait now, until unpaused.
-				System.out.println("Attempting to send message");
-				sendmessage("Waiting!");
-				System.out.println("Sent message:  waiting");
-				//logthis("Thread: Waiting!");
-				try {
-					synchronized(myThread) {
-					  myThread.wait();
-					}
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					sendmessage("Can't Wait!!!");
-					//logthis("Thread: Can't WAIT!!!!");
-				}  
-				sendmessage("Resumed!");
-				//logthis("Thread: Resumed!");
-			}
-			
-			 theboardc.drawLine(0,x,boardsize,x,myColor);
-			 x++;
-			 
-			//send message to redraw
-			handler.sendEmptyMessage(0);
-			//now wait a little bit.
-			try {
-				Thread.sleep(10);  //change to 100 for a commented out block, instead of just a line.
-			} catch (InterruptedException e) {
-				; //don't care
-			}
-			//determine if we are done or move the x?
-			if (x >= boardsize) done = true;
-		}	
-		theboardc.drawColor(Color.WHITE);
-		myColor.setColor(Color.BLACK);
-		isAnimation = false;
-		
-	}
-	
+    class animator implements Runnable {
+        @Override
+        public void run() {
+            boolean done = false;
+            int x = 0;
+            //first draw a red down the board
+            myColor.setColor(Color.RED);
+            while (!done) {
+                if (!isAnimation) {
+                    return;
+                }  //To stop the thread, if the system is paused or killed.
+
+                if (pause) {  //We should wait now, until unpaused.
+                    System.out.println("Attempting to send message");
+                    sendmessage("Waiting!");
+                    System.out.println("Sent message:  waiting");
+                    //logthis("Thread: Waiting!");
+                    try {
+                        synchronized (myThread) {
+                            myThread.wait();
+                        }
+                    } catch (InterruptedException e) {
+                        sendmessage("Can't Wait!!!");
+                        //logthis("Thread: Can't WAIT!!!!");
+                    }
+                    sendmessage("Resumed!");
+                    //logthis("Thread: Resumed!");
+                }
+
+                theboardc.drawLine(0, x, boardsize, x, myColor);
+                x++;
+
+                //send message to redraw
+                handler.sendEmptyMessage(0);
+                //now wait a little bit.
+                try {
+                    Thread.sleep(10);  //change to 100 for a commented out block, instead of just a line.
+                } catch (InterruptedException e) {
+                     //don't care
+                }
+                //determine if we are done or move the x?
+                if (x >= boardsize) done = true;
+            }
+            theboardc.drawColor(Color.WHITE);
+            myColor.setColor(Color.BLACK);
+            isAnimation = false;
+
+        }
+    }
 	/*
 	 * simple method to add the log TextView.
 	 */

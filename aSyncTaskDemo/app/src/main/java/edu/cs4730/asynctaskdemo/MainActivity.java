@@ -3,7 +3,7 @@ package edu.cs4730.asynctaskdemo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.app.Activity;
+import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -12,7 +12,7 @@ import android.widget.TextView;
  * very simple demo of a AsyncTask.
  * 
  */
-public class MainActivity extends Activity {
+public class MainActivity extends ActionBarActivity {
 	TextView Progress;
 	Button Button1;
 	
