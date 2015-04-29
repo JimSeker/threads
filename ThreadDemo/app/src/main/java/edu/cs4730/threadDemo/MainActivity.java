@@ -8,7 +8,7 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -20,7 +20,7 @@ import android.widget.TextView;
  * If the user lifts before it is done, then it will pause the thread.
  * 
  */
-public class ThreadDemoActivity extends ActionBarActivity {
+public class MainActivity extends AppCompatActivity {
 	
 	TextView log;
 	ImageView theboardfield;
