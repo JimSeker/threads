@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 /*
  * very simple demo of a AsyncTask.
- * 
+ *   Starts a AsyncTask to to display the progress from 0 to 100 (in increments of 5).
  */
 public class MainActivity extends AppCompatActivity {
 	TextView Progress;

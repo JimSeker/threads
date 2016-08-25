@@ -32,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
 	//for drawing
 	Rect myRec;
 	Paint myColor;
-	Bitmap alien;
 	//for the thread
 	Thread myThread;
 	
@@ -51,8 +50,6 @@ public class MainActivity extends AppCompatActivity {
 		theboardc.drawColor(Color.WHITE);  //background color for the board.
 		theboardfield.setImageBitmap(theboard);
 		theboardfield.setOnTouchListener(new myTouchListener());
-		//theboardfield.setOnClickListener(new myClickListener());
-	    //theboardfield.setOnLongClickListener(new myLongClickListener())	;
 		//For drawing
 		myRec = new Rect(0,0,10,10);
 		myColor = new Paint();  //default black
@@ -128,40 +125,7 @@ public class MainActivity extends AppCompatActivity {
 			return false; 
     	}
     }
-    
-    /*
-     * onClickListener
-     */
-    class myClickListener implements View.OnClickListener {
 
-		@Override
-		public void onClick(View v) {
-
-			logthis("onClick called");
-			if (isAnimation) { //thread is active,
-				 if (!pause) {  //and not paused, so stop it.
-					 stop();
-				 } else {  //is paused, restart it.
-					 go();
-				 }
-			} else {  //not running, start it.
-				go();
-			}
-		}
-    	
-    }
-    /*
-     * onLongClickListener
-     */
-    class myLongClickListener implements View.OnLongClickListener {
-
-		@Override
-		public boolean onLongClick(View v) {
-			logthis("onLongClick called");
-			return false;
-		}
-    	
-    }
     
     public void drawBmp() {
 		theboardfield.setImageBitmap(theboard);
@@ -233,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
 	 * simple method to add the log TextView.
 	 */
 	public void logthis (String newinfo) {
-		if (newinfo != "") {
+		if (newinfo.compareTo("") != 0) {
 			log.setText(log.getText() + "\n" + newinfo);
 		}
 	}
