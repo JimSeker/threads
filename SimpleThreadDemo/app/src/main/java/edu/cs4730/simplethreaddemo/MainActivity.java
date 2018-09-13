@@ -9,11 +9,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-
-/*
- *  A very simple thread demo.  It matches what happens in aSyncTaskDemo.
- *  basically starts a thread to display the progress from 0 to 100 (in increments of 5).
- *
+/**
+ * A very simple thread demo.  It matches what happens in aSyncTaskDemo.
+ * basically starts a thread to display the progress from 0 to 100 (in increments of 5).
  */
 
 public class MainActivity extends AppCompatActivity {
@@ -31,9 +29,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Progress = (TextView) findViewById(R.id.textView1);
+        Progress = findViewById(R.id.textView1);
 
-        Button1 = (Button) findViewById(R.id.button1);
+        Button1 = findViewById(R.id.button1);
         Button1.setOnClickListener(new Button.OnClickListener() {
             /*
              * starts the Thread.
@@ -50,9 +48,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean handleMessage(Message msg) {
                 if (msg.what == 0) { // update progress.
-                    Progress.setText("Progress: "+ProgressValue+"%");
+                    Progress.setText("Progress: " + ProgressValue + "%");
                 } else if (msg.what == 1) { //finished.
-                    Progress.setText("Completed: "+ProgressValue+"%");
+                    Progress.setText("Completed: " + ProgressValue + "%");
                 }
                 return true;
             }
@@ -61,17 +59,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     class CountingThread implements Runnable {
-        int i =0;  //default value of zero.
+        int i = 0;  //default value of zero.
 
         CountingThread(int start) {
             i = start; //starting value for the count.
         }
+
         @Override
         public void run() {
-            while(i<100) {
+            while (i < 100) {
                 SystemClock.sleep(250);
                 i++;
-                if (i%5 ==0) {
+                if (i % 5 == 0) {
                     //update UI
                     ProgressValue = i;
                     //send message to update the screen.
