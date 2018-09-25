@@ -1,7 +1,7 @@
 package edu.cs4730.simplethreaddemo2;
 
 import android.os.SystemClock;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
