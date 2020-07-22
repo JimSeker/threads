@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     int ProgressValue;
     Button Button1;
 
-    //for threading and commication,
+    //for threading and communication,
     protected Handler handler;
     //for the thread
     Thread myThread;
