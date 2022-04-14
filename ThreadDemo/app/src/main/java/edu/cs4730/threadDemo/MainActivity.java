@@ -1,5 +1,7 @@
 package edu.cs4730.threadDemo;
 
+import androidx.annotation.NonNull;
+
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -8,7 +10,9 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -58,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         //message handler for the animation.
         handler = new Handler(new Handler.Callback() {
             @Override
-            public boolean handleMessage(Message msg) {
+            public boolean handleMessage(@NonNull Message msg) {
                 if (msg.what == 0) { //redraw image
                     if (theboard != null && theboardfield != null) {
                         drawBmp();
@@ -113,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
         public boolean onTouch(View v, MotionEvent event) {
             //This toggles back and forth the thread.  Starting or stopping it, based on up/down events.    		
             int action = event.getAction();
+
             switch (action) {
                 //case MotionEvent.ACTION_DOWN:
                 case MotionEvent.ACTION_DOWN:
@@ -122,6 +127,7 @@ public class MainActivity extends AppCompatActivity {
                 case MotionEvent.ACTION_UP:
                     logthis("onTouch called, UP");
                     stop();
+                    v.performClick();
                     return true;
             }
 
@@ -203,7 +209,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public void logthis(String newinfo) {
         if (newinfo.compareTo("") != 0) {
-            log.setText(log.getText() + "\n" + newinfo);
+            log.append("\n" + newinfo);
         }
     }
 }

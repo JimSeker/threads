@@ -1,7 +1,9 @@
 package edu.cs4730.simplethreaddemo2;
 
 import android.os.SystemClock;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -31,9 +33,8 @@ public class MainActivity extends AppCompatActivity {
 
         Button1 = findViewById(R.id.button1);
         Button1.setOnClickListener(new Button.OnClickListener() {
-            /*
-             * starts the Thread.
-             */
+
+            //starts the Thread.
             @Override
             public void onClick(View view) {
                 myThread = new Thread(new CountingThread(0));
