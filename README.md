@@ -1,15 +1,18 @@
 Android Thread and AsyncTask Examples
 ===========
 
-<b>aSyncTaskDemo</b> is an example using the aSyncTask class instead of threads.  It counts from 0 to 100 (by 5).
+`aSyncTaskDemo` is an example using the aSyncTask class instead of threads.  It counts from 0 to 100 (by 5).  Note AsyncTask is depreciated in API 30+
 
-<b>SimpleThreadDemo</b> is the same example as aSyncTaskDemo, but uses threads and handlers.  Basically to see the difference in complexity between the two.
+`SimpleThreadDemo` is the same example as aSyncTaskDemo, but uses threads and handlers.  Basically to see the difference in complexity between the two.
 
-<b>SimpleThreadDemo2</b> is the same example as aSyncTaskDemo and SimpleThreadDemo, but uses the runOnUiThread method.
+`SimpleThreadDemo2` is the same example as aSyncTaskDemo and SimpleThreadDemo, but uses the runOnUiThread method.
 
-<b>TheadDemo</b> is example using threads in a more complex where an AsyncTask may not work as well.  It draws when the uses is touching the screen.
+`TheadDemo` is example using threads in a more complex way, where an AsyncTask may not work.  It draws when the uses is touching the screen.
 
-<b>eclipse/</b> has the examples for eclipse, no longer updated.  Otherwise the examples are for andriod studio.
+`eclipse/` has the examples for eclipse, no longer updated.  Otherwise the examples are for android studio.
 
-These are example code for University of Wyoming, Cosc 4730 Mobile Programming course.
+---
+
+These are example code for University of Wyoming, Cosc 4730 Mobile Programming course and cosc 4735 Advance Mobile Programing course. 
 All examples are for Android.
+
