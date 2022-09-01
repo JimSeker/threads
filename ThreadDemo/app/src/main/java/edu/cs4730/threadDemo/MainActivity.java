@@ -2,6 +2,7 @@ package edu.cs4730.threadDemo;
 
 import androidx.annotation.NonNull;
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -39,7 +40,9 @@ public class MainActivity extends AppCompatActivity {
     //for the thread
     Thread myThread;
 
+    final Object mylock = new Object();
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,8 +87,8 @@ public class MainActivity extends AppCompatActivity {
         if (pause) {  //The thread is paused, so attempt to restart it.
             logthis("About to notify!");
             pause = false;
-            synchronized (myThread) {
-                myThread.notify(); //in theory, this should wakeup the thread.  OR myThread.notifyAll()
+            synchronized (mylock) {
+                mylock.notify(); //in theory, this should wakeup the thread.  OR myThread.notifyAll()
             }
             logthis("waiting threads should be notified.");
         } else { //the thread is not running, so just start it.
@@ -122,6 +125,7 @@ public class MainActivity extends AppCompatActivity {
                 //case MotionEvent.ACTION_DOWN:
                 case MotionEvent.ACTION_DOWN:
                     logthis("onTouch called, DOWN");
+                    v.performClick();
                     go();
                     return true;
                 case MotionEvent.ACTION_UP:
@@ -172,8 +176,8 @@ public class MainActivity extends AppCompatActivity {
                     System.out.println("Sent message:  waiting");
                     //logthis("Thread: Waiting!");
                     try {
-                        synchronized (myThread) {
-                            myThread.wait();
+                        synchronized (mylock) {
+                            mylock.wait();
                         }
                     } catch (InterruptedException e) {
                         sendmessage("Can't Wait!!!");
