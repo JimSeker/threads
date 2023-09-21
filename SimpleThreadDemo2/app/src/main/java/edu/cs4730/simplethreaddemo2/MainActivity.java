@@ -7,7 +7,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
+
+import edu.cs4730.simplethreaddemo2.databinding.ActivityMainBinding;
 
 /**
  * A very simple thread demo.  It matches what happens in aSyncTaskDemo and SimpleThreadDemo
@@ -17,26 +18,21 @@ import android.widget.TextView;
  */
 public class MainActivity extends AppCompatActivity {
 
-    TextView Progress;
+    ActivityMainBinding binding;
     int ProgressValue;
-    Button Button1;
-
     //for the thread
     Thread myThread;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        Progress = findViewById(R.id.textView1);
-
-        Button1 = findViewById(R.id.button1);
-        Button1.setOnClickListener(new Button.OnClickListener() {
-
-            //starts the Thread.
+        binding.button1.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //starts the Thread.
                 myThread = new Thread(new CountingThread(0));
                 myThread.start();
             }
@@ -62,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Progress.setText("Progress: " + ProgressValue + "%");
+                            binding.progress.setText("Progress: " + ProgressValue + "%");
                         }
                     });
                 }
@@ -71,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
             runOnUiThread(new Runnable() {  //we need to run this on the main ui thread to access the UI.
                 @Override
                 public void run() {
-                    Progress.setText("Completed: " + ProgressValue + "%");
+                    binding.progress.setText("Completed: " + ProgressValue + "%");
                 }
             });
         }

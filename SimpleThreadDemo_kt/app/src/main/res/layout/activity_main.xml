@@ -22,7 +22,7 @@
         tools:layout_constraintTop_creator="1" />
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/progress"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginLeft="0dp"

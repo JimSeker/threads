@@ -2,20 +2,20 @@ package edu.cs4730.simplethreaddemo_kt
 
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
+import android.os.Message
 import android.os.SystemClock
 import android.view.View
-import android.widget.Button
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import edu.cs4730.simplethreaddemo_kt.databinding.ActivityMainBinding
 
 /**
  * A very simple thread demo.  It matches what happens in aSyncTaskDemo.
  * basically starts a thread to display the progress from 0 to 100 (in increments of 5).
  */
 class MainActivity : AppCompatActivity() {
-    lateinit var Progress: TextView
+    lateinit var binding: ActivityMainBinding
     var ProgressValue = 0
-    lateinit var Button1: Button
 
     //for threading and communication,
     protected var handler: Handler? = null
@@ -24,25 +24,24 @@ class MainActivity : AppCompatActivity() {
     var myThread: Thread? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        Progress = findViewById(R.id.textView1)
-        Button1 = findViewById(R.id.button1)
-        Button1.setOnClickListener(
-            View.OnClickListener
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        binding.button1.setOnClickListener(View.OnClickListener {
             // starts the Thread.
-            {
-                myThread = Thread(CountingThread(0))
-                myThread!!.start()
-            })
+            myThread = Thread(CountingThread(0))
+            myThread!!.start()
+        })
 
         //message handler for the animation.
-        handler = Handler { msg ->
-            if (msg.what == 0) { // update progress.
-                Progress.setText("Progress: $ProgressValue%")
-            } else if (msg.what == 1) { //finished.
-                Progress.setText("Completed: $ProgressValue%")
+        handler = object : Handler(Looper.getMainLooper()) {
+            override fun handleMessage(msg: Message) {
+                if (msg.what == 0) { // update progress.
+                    binding.progress.text = "Progress: $ProgressValue%"
+                } else if (msg.what == 1) { //finished.
+                    binding.progress.text = "Completed: $ProgressValue%"
+                }
             }
-            true
         }
     }
 

@@ -1,6 +1,7 @@
 package edu.cs4730.simplethreaddemo;
 
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.os.SystemClock;
 
@@ -11,6 +12,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import edu.cs4730.simplethreaddemo.databinding.ActivityMainBinding;
+
 /**
  * A very simple thread demo.  It matches what happens in aSyncTaskDemo.
  * basically starts a thread to display the progress from 0 to 100 (in increments of 5).
@@ -18,9 +21,8 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView Progress;
     int ProgressValue;
-    Button Button1;
+    ActivityMainBinding binding;
 
     //for threading and communication,
     protected Handler handler;
@@ -30,11 +32,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Progress = findViewById(R.id.textView1);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        Button1 = findViewById(R.id.button1);
-        Button1.setOnClickListener(new Button.OnClickListener() {
+        binding.button1.setOnClickListener(new Button.OnClickListener() {
             // starts the Thread.
             @Override
             public void onClick(View view) {
@@ -44,17 +45,16 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //message handler for the animation.
-        handler = new Handler(new Handler.Callback() {
+        handler = new Handler(Looper.getMainLooper()) {
             @Override
-            public boolean handleMessage(Message msg) {
+            public void handleMessage(Message msg) {
                 if (msg.what == 0) { // update progress.
-                    Progress.setText("Progress: " + ProgressValue + "%");
+                    binding.progress.setText("Progress: " + ProgressValue + "%");
                 } else if (msg.what == 1) { //finished.
-                    Progress.setText("Completed: " + ProgressValue + "%");
+                    binding.progress.setText("Completed: " + ProgressValue + "%");
                 }
-                return true;
             }
-        });
+        };
 
     }
 
