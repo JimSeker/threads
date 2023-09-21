@@ -3,34 +3,34 @@ package edu.cs4730.asynctaskdemo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import edu.cs4730.asynctaskdemo.databinding.ActivityMainBinding;
+
 /**
  * very simple demo of a AsyncTask.
  * Starts a AsyncTask to to display the progress from 0 to 100 (in increments of 5).
- *
+ * <p>
  * AsyncTask was deprecated in API level 30.
  */
 public class MainActivity extends AppCompatActivity {
-    TextView Progress;
-    Button Button1;
+    ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        Progress = findViewById(R.id.textView1);
-        Button1 = findViewById(R.id.button1);
-        Button1.setOnClickListener(new Button.OnClickListener() {
-            /**
-             * starts the asynctask.
-             */
+        binding.button1.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // start the asynctask here.
                 CountingTask task = new CountingTask();
                 task.execute(0);
             }
@@ -42,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
      * layout.
      */
     public class CountingTask extends AsyncTask<Integer, Integer, Integer> {
-
         CountingTask() {
         }
 
@@ -61,17 +60,17 @@ public class MainActivity extends AppCompatActivity {
         }
 
         protected void onProgressUpdate(Integer... progress) {
-            Progress.setText("Progress: " + progress[0] + "%");
+            binding.progress.setText("Progress: " + progress[0] + "%");
         }
 
         protected void onPostExecute(Integer result) {
-            Progress.setText("Completed: " + result + "%");
+            binding.progress.setText("Completed: " + result + "%");
         }
+
         protected void onPreExecute() {
             //invoked on the UI thread before the task is executed.
             //his step is normally used to setup the task, for instance by showing a progress bar in the user interface.
-            Progress.setText("About to start.");
+            binding.progress.setText("About to start.");
         }
-
     }
 }
