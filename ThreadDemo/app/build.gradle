@@ -21,6 +21,9 @@ android {
         }
     }
     namespace 'edu.cs4730.threadDemo'
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {

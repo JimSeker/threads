@@ -22,6 +22,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import edu.cs4730.threadDemo.databinding.ActivityMainBinding;
+
 /**
  * This is a thread demo
  * When the user touches the image, a red bar will roll down.
@@ -30,8 +32,7 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView log;
-    ImageView theboardfield;
+    ActivityMainBinding binding;
     Bitmap theboard;
     Canvas theboardc;
     final int boardsize = 480;
@@ -49,21 +50,21 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        ViewCompat.setOnApplyWindowInsetsListener(binding.main, (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return WindowInsetsCompat.CONSUMED;
         });
-        log = findViewById(R.id.log);
+
         //get the imageview and create a bitmap to put in the imageview.
         //also create the canvas to draw on.
-        theboardfield = findViewById(R.id.boardfield);
         theboard = Bitmap.createBitmap(boardsize, boardsize, Bitmap.Config.ARGB_8888);
         theboardc = new Canvas(theboard);
         theboardc.drawColor(Color.WHITE);  //background color for the board.
-        theboardfield.setImageBitmap(theboard);
-        theboardfield.setOnTouchListener(new myTouchListener());
+        binding.boardfield.setImageBitmap(theboard);
+        binding.boardfield.setOnTouchListener(new myTouchListener());
         //For drawing
         myRec = new Rect(0, 0, 10, 10);
         myColor = new Paint();  //default black
@@ -74,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean handleMessage(@NonNull Message msg) {
                 if (msg.what == 0) { //redraw image
-                    if (theboard != null && theboardfield != null) {
+                    if (theboard != null) {
                         drawBmp();
                     }
                 } else {  //get the data package out of the msg
@@ -148,8 +149,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void drawBmp() {
-        theboardfield.setImageBitmap(theboard);
-        theboardfield.invalidate();
+        binding.boardfield.setImageBitmap(theboard);
+        binding.boardfield.invalidate();
     }
 
     public void sendmessage(String logthis) {
@@ -220,7 +221,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public void logthis(String newinfo) {
         if (newinfo.compareTo("") != 0) {
-            log.append("\n" + newinfo);
+            binding.log.append("\n" + newinfo);
         }
     }
 }

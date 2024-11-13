@@ -7,11 +7,10 @@ import android.os.Handler
 import android.view.MotionEvent
 import android.view.View
 import android.view.View.OnTouchListener
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import edu.cs4730.threaddemo_kt.databinding.ActivityMainBinding
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.withLock
 
@@ -25,8 +24,7 @@ class MainActivity : AppCompatActivity() {
 
 
     companion object {
-        lateinit var log: TextView
-        lateinit var theboardfield: ImageView
+        private lateinit var binding: ActivityMainBinding
         lateinit var theboard: Bitmap
         lateinit var theboardc: Canvas
         val boardsize = 480
@@ -56,8 +54,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         fun drawBmp() {
-            theboardfield.setImageBitmap(theboard)
-            theboardfield.invalidate()
+            binding.boardfield.setImageBitmap(theboard)
+            binding.boardfield.invalidate()
         }
 
 
@@ -66,8 +64,7 @@ class MainActivity : AppCompatActivity() {
          */
         fun logthis(newinfo: String) {
             if (newinfo.compareTo("") != 0) {
-                log.append("\n" + newinfo)
-
+                binding.log.append("\n" + newinfo)
             }
         }
 
@@ -110,25 +107,26 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v: View, insets: WindowInsetsCompat ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             WindowInsetsCompat.CONSUMED
         }
 
-        log = findViewById(R.id.log)
+
         //get the imageview and create a bitmap to put in the imageview.
         //also create the canvas to draw on.
         //get the imageview and create a bitmap to put in the imageview.
         //also create the canvas to draw on.
-        theboardfield = findViewById(R.id.boardfield)
+
         theboard = Bitmap.createBitmap(boardsize, boardsize, Bitmap.Config.ARGB_8888)
         theboardc = Canvas(theboard)
         theboardc.drawColor(Color.WHITE) //background color for the board.
 
-        theboardfield.setImageBitmap(theboard)
-        theboardfield.setOnTouchListener(myTouchListener())
+        binding.boardfield.setImageBitmap(theboard)
+        binding.boardfield.setOnTouchListener(myTouchListener())
         //For drawing
         //For drawing
         myRec = Rect(0, 0, 10, 10)

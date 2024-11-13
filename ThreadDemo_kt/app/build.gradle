@@ -30,6 +30,9 @@ android {
         jvmTarget = '1.8'
     }
     namespace 'edu.cs4730.threaddemo_kt'
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
