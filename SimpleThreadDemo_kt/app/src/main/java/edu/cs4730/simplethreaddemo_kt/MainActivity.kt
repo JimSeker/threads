@@ -1,5 +1,6 @@
 package edu.cs4730.simplethreaddemo_kt
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -42,6 +43,7 @@ class MainActivity : AppCompatActivity() {
 
         //message handler for the animation.
         handler = object : Handler(Looper.getMainLooper()) {
+            @SuppressLint("SetTextI18n")
             override fun handleMessage(msg: Message) {
                 if (msg.what == 0) { // update progress.
                     binding.progress.text = "Progress: $ProgressValue%"

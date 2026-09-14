@@ -1,5 +1,6 @@
 package edu.cs4730.simplethreaddemo2_kt
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.SystemClock
 import android.view.View
@@ -40,6 +41,7 @@ class MainActivity : AppCompatActivity() {
 
     private inner class CountingThread(start: Int) : Runnable {
         var i = 0 //default value of zero.
+        @SuppressLint("SetTextI18n")
         override fun run() {
             while (i < 100) {
                 SystemClock.sleep(250)
